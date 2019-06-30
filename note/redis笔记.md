@@ -10,10 +10,10 @@
 
 
 # Redis
-	1. 概念： redis是一款高性能的NOSQL系列的非关系型数据库
+1. 概念： redis是一款高性能的NOSQL系列的非关系型数据库
 
 
-		1.1.什么是NOSQL
+	1.1.什么是NOSQL
 			NoSQL(NoSQL = Not Only SQL)，意即“不仅仅是SQL”，是一项全新的数据库理念，泛指非关系型的数据库。
 			随着互联网web2.0网站的兴起，传统的关系数据库在应付web2.0网站，特别是超大规模和高并发的SNS类型的web2.0纯动态网站已经显得力不从心，暴露了很多难以克服的问题，而非关系型的数据库则由于其本身的特点得到了非常迅速的发展。NoSQL数据库的产生就是为了解决大规模数据集合多重数据种类带来的挑战，尤其是大数据应用难题。
 
@@ -84,7 +84,7 @@
 				•	分布式集群架构中的session分离
 
 
-	2. 下载安装
+2. 下载安装
 		1. 官网：https://redis.io
 		2. 中文网：http://www.redis.net.cn/
 		3. 解压直接可以使用：
@@ -92,7 +92,9 @@
 			* redis-cli.exe：redis的客户端
 			* redis-server.exe：redis服务器端
 		
-	3. 命令操作
+3. 命令操作
+
+
 		1. redis的数据结构：
 			* redis存储的是：key,value格式的数据，其中key都是字符串，value有5种不同的数据结构
 				* value的数据结构：
@@ -200,31 +202,57 @@
 			3. del key：删除指定的key value
 
 
-	4. 持久化
-		1. redis是一个内存数据库，当redis服务器重启，获取电脑重启，数据会丢失，我们可以将redis内存中的数据持久化保存到硬盘的文件中。
-		2. redis持久化机制：
-			1. RDB：默认方式，不需要进行配置，默认就使用这种机制
-				* 在一定的间隔时间中，检测key的变化情况，然后持久化数据
-				1. 编辑redis.windwos.conf文件
-					#   after 900 sec (15 min) if at least 1 key changed
-					save 900 1
-					#   after 300 sec (5 min) if at least 10 keys changed
-					save 300 10
-					#   after 60 sec if at least 10000 keys changed
-					save 60 10000
-					
-				2. 重新启动redis服务器，并指定配置文件名称
-					D:\JavaWeb2018\day23_redis\资料\redis\windows-64\redis-2.8.9>redis-server.exe redis.windows.conf	
-				
-			2. AOF：日志记录的方式，可以记录每一条命令的操作。可以每一次命令操作后，持久化数据
-				1. 编辑redis.windwos.conf文件
-					appendonly no（关闭aof） --> appendonly yes （开启aof）
-					
-					# appendfsync always ： 每一次操作都进行持久化
-					appendfsync everysec ： 每隔一秒进行一次持久化
-					# appendfsync no	 ： 不进行持久化
+##持久化
+1. redis是一个内存数据库，当redis服务器重启，获取电脑重启，数据会丢失，我们可以将redis内存中的数据持久化保存到硬盘的文件中。
+	
+2. redis持久化机制：
+ 
+2.1. RDB：   
 
-	5. Java客户端 Jedis
+默认方式，不需要进行配置，默认就使用这种机制
+* 在一定的间隔时间中，检测key的变化情况，然后持久化数据
+
+1. 编辑redis.windwos.conf文件
+```
+#   after 900 sec (15 min) if at least 1 key changed
+save 900 1
+#   after 300 sec (5 min) if at least 10 keys changed
+save 300 10
+#   after 60 sec if at least 10000 keys changed
+save 60 10000
+```
+
+具体配置取决于业务和服务器性能。
+
+					
+2. 重新启动redis服务器，并指定配置文件名称
+```javascript
+D:\JavaWeb2018\day23_redis\资料\redis\windows-64\redis-2.8.9>redis-server.exe redis.windows.conf
+```
+
+会持久化一个rdb文件中。
+
+
+
+2.2 AOF：  
+日志记录的方式，可以记录每一条命令的操作。可以每一次命令操作后，持久化数据
+1. 编辑redis.windwos.conf文件
+
+appendonly no（关闭aof） --> appendonly yes （开启aof）
+```
+# appendfsync always ： 每一次操作都进行持久化
+appendfsync everysec ： 每隔一秒进行一次持久化
+# appendfsync no	 ： 不进行持久化
+```
+				
+会生成一个.aof文件
+
+对性能影响比较严重
+
+
+							
+
+## Java客户端 Jedis
 		* Jedis: 一款java操作redis数据库的工具.
 		* 使用步骤：
 			1. 下载jedis的jar包
