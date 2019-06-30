@@ -232,7 +232,7 @@ D:\JavaWeb2018\day23_redis\资料\redis\windows-64\redis-2.8.9>redis-server.exe 
 
 会持久化一个rdb文件中。
 
-
+可能被丢数据
 
 2.2 AOF：  
 日志记录的方式，可以记录每一条命令的操作。可以每一次命令操作后，持久化数据
